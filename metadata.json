@@ -1,0 +1,5 @@
+{
+  "name": "Server Ping Monitor",
+  "description": "An application to periodically ping a list of servers and log their status and response time. It provides a real-time view of server health.",
+  "requestFramePermissions": []
+}
