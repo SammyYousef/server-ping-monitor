@@ -31,7 +31,7 @@ const ControlsPanel: React.FC<ControlsPanelProps> = ({
   setTimeFormat,
 }) => {
   return (
-    <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50 flex flex-col gap-6 h-full shadow-lg">
+    <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50 flex flex-col gap-6 shadow-lg">
       <h2 className="text-2xl font-bold text-gray-100">Controls</h2>
       
       <div className="flex flex-col gap-2">

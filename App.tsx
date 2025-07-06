@@ -153,24 +153,22 @@ const App: React.FC = () => {
         <p className="mt-2 text-sm text-gray-500">A tool by Sammy Yousef created with Google AI Studio on 6 July 2025.</p>
       </header>
 
-      <main className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        <div className="lg:col-span-1">
-          <ControlsPanel
-            serverList={serverList}
-            setServerList={setServerList}
-            intervalSeconds={intervalSeconds}
-            setIntervalSeconds={setIntervalSeconds}
-            isPinging={isPinging}
-            onStart={handleStart}
-            onStop={handleStop}
-            onClearLogs={handleClearLogs}
-            onExportLogs={handleExportLogs}
-            logsExist={logs.length > 0}
-            timeFormat={timeFormat}
-            setTimeFormat={setTimeFormat}
-          />
-        </div>
-        <div className="lg:col-span-2 min-h-[60vh]">
+      <main className="grid grid-cols-1 gap-8 max-w-7xl mx-auto">
+        <ControlsPanel
+          serverList={serverList}
+          setServerList={setServerList}
+          intervalSeconds={intervalSeconds}
+          setIntervalSeconds={setIntervalSeconds}
+          isPinging={isPinging}
+          onStart={handleStart}
+          onStop={handleStop}
+          onClearLogs={handleClearLogs}
+          onExportLogs={handleExportLogs}
+          logsExist={logs.length > 0}
+          timeFormat={timeFormat}
+          setTimeFormat={setTimeFormat}
+        />
+        <div className="min-h-[60vh]">
           <LogTable logs={logs} timeFormat={timeFormat} />
         </div>
       </main>
