@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { PingLog, PingStatus } from './types';
+import { PingLog, PingStatus, TimeFormat } from './types';
 import ControlsPanel from './components/ControlsPanel';
 import LogTable from './components/LogTable';
 
@@ -12,6 +12,7 @@ const App: React.FC = () => {
   const [intervalSeconds, setIntervalSeconds] = useState<number>(5);
   const [isPinging, setIsPinging] = useState<boolean>(false);
   const [logs, setLogs] = useState<PingLog[]>([]);
+  const [timeFormat, setTimeFormat] = useState<TimeFormat>(TimeFormat.Local);
 
   const handleStart = () => {
     const serverUrls = serverList.split('\n').map(s => s.trim()).filter(Boolean);
@@ -42,12 +43,16 @@ const App: React.FC = () => {
     // The logs state is in reverse chronological order, so we reverse it back for export.
     const sortedLogs = [...logs].reverse();
 
-    const headers = ['Timestamp', 'Server', 'Response Time (ms)', 'Status'];
+    const headers = [`Timestamp (${timeFormat.toUpperCase()})`, 'Server', 'Response Time (ms)', 'Status'];
     const csvRows = [headers.join(',')];
 
     sortedLogs.forEach(log => {
-      const timestamp = log.timestamp.toISOString();
-      // Ensure server URL with commas is properly quoted in CSV
+      // Use toLocaleString for local time to get a more user-friendly format (date and time), and wrap in quotes.
+      // toISOString is standard for UTC and doesn't need quotes as it doesn't contain commas.
+      const timestamp = timeFormat === TimeFormat.Local
+        ? `"${log.timestamp.toLocaleString()}"`
+        : log.timestamp.toISOString();
+
       const server = `"${log.server.replace(/"/g, '""')}"`; 
       const responseTime = log.responseTime !== null ? log.responseTime : '';
       const { status } = log;
@@ -67,7 +72,7 @@ const App: React.FC = () => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  }, [logs]);
+  }, [logs, timeFormat]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -159,10 +164,12 @@ const App: React.FC = () => {
             onClearLogs={handleClearLogs}
             onExportLogs={handleExportLogs}
             logsExist={logs.length > 0}
+            timeFormat={timeFormat}
+            setTimeFormat={setTimeFormat}
           />
         </div>
         <div className="lg:col-span-2 min-h-[60vh]">
-          <LogTable logs={logs} />
+          <LogTable logs={logs} timeFormat={timeFormat} />
         </div>
       </main>
     </div>

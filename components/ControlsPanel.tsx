@@ -1,4 +1,5 @@
 import React from 'react';
+import { TimeFormat } from '../types';
 
 interface ControlsPanelProps {
   serverList: string;
@@ -11,6 +12,8 @@ interface ControlsPanelProps {
   onClearLogs: () => void;
   onExportLogs: () => void;
   logsExist: boolean;
+  timeFormat: TimeFormat;
+  setTimeFormat: (value: TimeFormat) => void;
 }
 
 const ControlsPanel: React.FC<ControlsPanelProps> = ({
@@ -24,6 +27,8 @@ const ControlsPanel: React.FC<ControlsPanelProps> = ({
   onClearLogs,
   onExportLogs,
   logsExist,
+  timeFormat,
+  setTimeFormat,
 }) => {
   return (
     <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50 flex flex-col gap-6 h-full shadow-lg">
@@ -52,6 +57,36 @@ const ControlsPanel: React.FC<ControlsPanelProps> = ({
           disabled={isPinging}
           className="bg-gray-900 border border-gray-600 rounded-md p-3 w-full text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 disabled:opacity-50"
         />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="font-semibold text-gray-300">Time format:</label>
+        <div className="flex items-center gap-6 mt-1">
+          <label className={`flex items-center text-gray-200 transition-colors duration-200 ${isPinging ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:text-white'}`}>
+            <input
+              type="radio"
+              name="time-format"
+              value={TimeFormat.Local}
+              checked={timeFormat === TimeFormat.Local}
+              onChange={() => setTimeFormat(TimeFormat.Local)}
+              disabled={isPinging}
+              className="h-4 w-4 shrink-0 appearance-none rounded-full border-2 border-gray-500 bg-gray-900 checked:bg-blue-600 checked:border-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500"
+            />
+            <span className="ml-2">Local Time</span>
+          </label>
+          <label className={`flex items-center text-gray-200 transition-colors duration-200 ${isPinging ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:text-white'}`}>
+            <input
+              type="radio"
+              name="time-format"
+              value={TimeFormat.UTC}
+              checked={timeFormat === TimeFormat.UTC}
+              onChange={() => setTimeFormat(TimeFormat.UTC)}
+              disabled={isPinging}
+              className="h-4 w-4 shrink-0 appearance-none rounded-full border-2 border-gray-500 bg-gray-900 checked:bg-blue-600 checked:border-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500"
+            />
+            <span className="ml-2">UTC</span>
+          </label>
+        </div>
       </div>
 
       <div className="flex flex-col gap-3 mt-auto pt-4">
@@ -86,6 +121,9 @@ const ControlsPanel: React.FC<ControlsPanelProps> = ({
               Export Logs
           </button>
         </div>
+        <p className="text-xs text-gray-500 mt-4 text-center italic">
+          *Note: True UDP ping is not possible from web browsers. Web ping is used by this application.
+        </p>
       </div>
     </div>
   );

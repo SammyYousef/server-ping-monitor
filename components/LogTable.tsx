@@ -1,10 +1,11 @@
 
 import React from 'react';
-import { PingLog, PingStatus } from '../types';
+import { PingLog, PingStatus, TimeFormat } from '../types';
 import { SuccessIcon, FailureIcon, PingingIcon } from './Icons';
 
 interface LogTableProps {
   logs: PingLog[];
+  timeFormat: TimeFormat;
 }
 
 const StatusIndicator: React.FC<{ status: PingStatus }> = ({ status }) => {
@@ -20,7 +21,7 @@ const StatusIndicator: React.FC<{ status: PingStatus }> = ({ status }) => {
   }
 };
 
-const LogTable: React.FC<LogTableProps> = ({ logs }) => {
+const LogTable: React.FC<LogTableProps> = ({ logs, timeFormat }) => {
   return (
     <div className="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50 flex flex-col h-full shadow-lg font-fira-code">
       <h2 className="text-2xl font-bold text-gray-100 mb-4 font-sans">Ping Logs</h2>
@@ -28,7 +29,7 @@ const LogTable: React.FC<LogTableProps> = ({ logs }) => {
         <table className="w-full text-left table-fixed">
           <thead className="sticky top-0 bg-gray-800/80 backdrop-blur-sm">
             <tr>
-              <th className="w-1/4 py-3 px-4 font-semibold text-gray-300 text-sm">Timestamp</th>
+              <th className="w-1/4 py-3 px-4 font-semibold text-gray-300 text-sm">Timestamp ({timeFormat === TimeFormat.Local ? 'Local' : 'UTC'})</th>
               <th className="w-2/4 py-3 px-4 font-semibold text-gray-300 text-sm">Server</th>
               <th className="w-1/4 py-3 px-4 font-semibold text-gray-300 text-sm">Response Time</th>
               <th className="w-1/4 py-3 px-4 font-semibold text-gray-300 text-sm">Status</th>
@@ -44,7 +45,11 @@ const LogTable: React.FC<LogTableProps> = ({ logs }) => {
             )}
             {logs.map((log) => (
               <tr key={log.id} className="border-t border-gray-700/50 hover:bg-gray-700/30 transition-colors duration-150">
-                <td className="py-3 px-4 text-gray-400 text-sm">{log.timestamp.toLocaleTimeString()}</td>
+                <td className="py-3 px-4 text-gray-400 text-sm">
+                  {timeFormat === TimeFormat.Local
+                    ? log.timestamp.toLocaleTimeString()
+                    : log.timestamp.toLocaleTimeString('en-GB', { timeZone: 'UTC' })}
+                </td>
                 <td className="py-3 px-4 text-blue-300 truncate text-sm">{log.server}</td>
                 <td className="py-3 px-4 text-sm">
                   {log.responseTime !== null ? (

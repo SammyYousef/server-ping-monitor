@@ -12,3 +12,8 @@ export interface PingLog {
   responseTime: number | null;
   status: PingStatus;
 }
+
+export enum TimeFormat {
+  Local = 'local',
+  UTC = 'utc',
+}
