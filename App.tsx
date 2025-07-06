@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { PingLog, PingStatus, TimeFormat } from './types';
 import ControlsPanel from './components/ControlsPanel';
 import LogTable from './components/LogTable';
 
 const MAX_LOG_ENTRIES = 200;
-const DEFAULT_SERVERS = "https://www.google.com\nhttps://www.github.com\nhttps://www.cloudflare.com\nhttps://this-is-a-fake-domain.xyz";
+const DEFAULT_SERVERS = "https://www.google.com\nhttps://www.github.com\nhttps://www.cloudflare.com";
 
 const App: React.FC = () => {
   const [serverList, setServerList] = useState<string>(DEFAULT_SERVERS);
@@ -149,6 +150,7 @@ const App: React.FC = () => {
       <header className="text-center mb-8">
         <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight">Server Ping Monitor</h1>
         <p className="mt-2 text-lg text-gray-400">A real-time tool to check server health and latency.</p>
+        <p className="mt-2 text-sm text-gray-500">A tool by Sammy Yousef created with Google AI Studio on 6 July 2025.</p>
       </header>
 
       <main className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
