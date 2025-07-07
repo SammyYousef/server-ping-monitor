@@ -12,6 +12,14 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      //change port for production
+      preview: {
+        port: 3001,
+      },
+      // for dev
+      server: {
+        port: 3000,
       }
     };
 });
